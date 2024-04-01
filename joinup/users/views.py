@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserRegisterSerializer, UserProfileSerializer
+from .tasks import send_email_async, send_sms_async
+
 
 User = get_user_model()
 
@@ -13,8 +15,8 @@ class UserRegisterView(APIView):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            print(f"Sending email to {user.email}")
-            print(f"Sending SMS to {user.phone}")
+            send_email_async.delay(user.email)
+            send_sms_async.delay(user.phone)
             return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -7,6 +7,7 @@ Joinup challenge
 2. Create a virtual environment using environment.yml file
 3. Activate the virtual environment
 4. Run Django migrations
+5. Start Celery worker
 5. Run Django server
 
 ```bash
@@ -15,6 +16,7 @@ conda env create -f environment.yml
 conda activate joinup
 cd joinup
 python manage.py migrate
+celery -A joinup worker -l info
 python manage.py runserver
 ```
 
