@@ -13,8 +13,8 @@ class UserRegisterView(APIView):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            print(f"Sending email to {email}")
-            print(f"Sending SMS to {phone}")
+            print(f"Sending email to {user.email}")
+            print(f"Sending SMS to {user.phone}")
             return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
